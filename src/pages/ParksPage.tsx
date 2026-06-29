@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { Pagination } from '../components/Pagination/Pagination'
 import { ParkCard } from '../components/ParkCard/ParkCard'
 import { ParkCardSkeleton } from '../components/ParkCard/ParkCardSkeleton'
+import { ParkMap } from '../components/ParkMap/ParkMap'
 import { ParksFilters } from '../components/ParksFilters/ParksFilters'
+import { ParksViewToggle, type ParksViewMode } from '../components/ParksViewToggle/ParksViewToggle'
 import { PARKS_PAGE_SIZE } from '../constants/parks'
 import { useFilterPagination } from '../hooks/useFilterPagination'
 import { useParksList } from '../hooks/useParks'
@@ -16,6 +18,7 @@ function buildApiQuery(search: string, designation: string): string | undefined 
 }
 
 export function ParksPage() {
+  const [view, setView] = useState<ParksViewMode>('grid')
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [stateCode, setStateCode] = useState('')
@@ -68,13 +71,16 @@ export function ParksPage() {
 
   return (
     <section className="container-app section-padding">
-      <div className="max-w-3xl">
-        <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-          Explore Parks
-        </h1>
-        <p className="mt-3 text-muted">
-          Browse America&apos;s national parks, monuments, and historic sites.
-        </p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="max-w-3xl">
+          <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
+            Explore Parks
+          </h1>
+          <p className="mt-3 text-muted">
+            Browse America&apos;s national parks, monuments, and historic sites.
+          </p>
+        </div>
+        <ParksViewToggle view={view} onViewChange={setView} />
       </div>
 
       <ParksFilters
@@ -88,7 +94,7 @@ export function ParksPage() {
         hasActiveFilters={hasActiveFilters}
       />
 
-      {isLoading && (
+      {isLoading && view === 'grid' && (
         <div
           className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           aria-busy="true"
@@ -97,6 +103,16 @@ export function ParksPage() {
           {Array.from({ length: SKELETON_COUNT }, (_, index) => (
             <ParkCardSkeleton key={index} />
           ))}
+        </div>
+      )}
+
+      {isLoading && view === 'map' && (
+        <div
+          className="surface-card mt-8 flex h-[32rem] animate-pulse items-center justify-center lg:h-[36rem]"
+          aria-busy="true"
+          aria-label="Loading map"
+        >
+          <p className="text-sm text-muted">Loading map…</p>
         </div>
       )}
 
@@ -152,17 +168,27 @@ export function ParksPage() {
             )}
           </div>
 
-          <ul
-            className={`mt-4 grid grid-cols-1 gap-6 transition-opacity sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
-              isFetching ? 'opacity-70' : 'opacity-100'
-            }`}
-          >
-            {visibleParks.map((park) => (
-              <li key={park.parkCode} className="h-full">
-                <ParkCard park={park} />
-              </li>
-            ))}
-          </ul>
+          {view === 'grid' ? (
+            <ul
+              className={`mt-4 grid grid-cols-1 gap-6 transition-opacity sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
+                isFetching ? 'opacity-70' : 'opacity-100'
+              }`}
+            >
+              {visibleParks.map((park) => (
+                <li key={park.parkCode} className="h-full">
+                  <ParkCard park={park} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div
+              className={`surface-card mt-4 h-[32rem] p-3 transition-opacity lg:h-[36rem] lg:p-4 ${
+                isFetching ? 'opacity-70' : 'opacity-100'
+              }`}
+            >
+              <ParkMap parks={visibleParks} />
+            </div>
+          )}
 
           <Pagination
             page={page}

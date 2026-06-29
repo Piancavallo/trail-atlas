@@ -2,6 +2,7 @@
 import { Layout } from './components/Layout/Layout'
 import { ParkDetailPage } from './pages/ParkDetailPage'
 import { ParksPage } from './pages/ParksPage'
+import { TripPlannerPage } from './pages/TripPlannerPage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
         <Route path="parks" element={<ParksPage />} />
         <Route path="parks/:code" element={<ParkDetailPage />} />
         <Route path="favorites" element={<PlaceholderPage title="Your Favorites" />} />
-        <Route path="plan" element={<PlaceholderPage title="Trip Planner" />} />
+        <Route path="plan" element={<TripPlannerPage />} />
         <Route path="about" element={<PlaceholderPage title="About Trail Atlas" />} />
       </Route>
     </Routes>

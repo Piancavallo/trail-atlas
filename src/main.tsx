@@ -4,6 +4,7 @@ import { AppProviders } from './providers/AppProviders'
 import { applyThemeToDocument, getStoredTheme } from './utils/theme'
 import App from './App.tsx'
 import './index.css'
+import 'leaflet/dist/leaflet.css'
 
 applyThemeToDocument(getStoredTheme())
 

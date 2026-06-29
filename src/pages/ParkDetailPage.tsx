@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { FavoriteButton } from '../components/FavoriteButton/FavoriteButton'
+import { TripButton } from '../components/TripButton/TripButton'
 import { ParkCardFallbackImage } from '../components/ParkCard/ParkCardFallbackImage'
 import { ParkCardSkeleton } from '../components/ParkCard/ParkCardSkeleton'
 import { ParkImage } from '../components/ParkImage/ParkImage'
@@ -154,7 +155,10 @@ export function ParkDetailPage() {
           </h1>
           <p className="mt-3 text-muted">{formatParkStates(park.states)}</p>
         </div>
-        <FavoriteButton parkCode={park.parkCode} parkName={park.fullName} />
+        <div className="flex shrink-0 flex-wrap gap-2">
+          <TripButton parkCode={park.parkCode} parkName={park.fullName} />
+          <FavoriteButton parkCode={park.parkCode} parkName={park.fullName} />
+        </div>
       </header>
 
       <section className="mt-10 max-w-5xl" aria-label="Park photos">

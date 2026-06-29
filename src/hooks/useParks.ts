@@ -3,9 +3,13 @@ import { fetchParks } from '../api/nps'
 import { queryKeys } from '../api/queryKeys'
 import type { FetchParksParams } from '../types/nps'
 
-export function useParksList(params?: FetchParksParams) {
+export function useParksList(
+  params?: FetchParksParams,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: queryKeys.parks.list(params),
     queryFn: () => fetchParks(params),
+    enabled: options?.enabled ?? true,
   })
 }

@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { type ReactNode } from 'react'
 import { queryClient } from '../config/queryClient'
 import { FavoritesProvider } from '../context/FavoritesProvider'
+import { TripProvider } from '../context/TripProvider'
 import { ThemeProvider } from '../context/ThemeProvider'
 
 export function AppProviders({ children }: { children: ReactNode }) {
@@ -10,7 +11,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <FavoritesProvider>
-          <BrowserRouter>{children}</BrowserRouter>
+          <TripProvider>
+            <BrowserRouter>{children}</BrowserRouter>
+          </TripProvider>
         </FavoritesProvider>
       </ThemeProvider>
     </QueryClientProvider>
