@@ -2,13 +2,16 @@
 import { BrowserRouter } from 'react-router-dom'
 import { type ReactNode } from 'react'
 import { queryClient } from '../config/queryClient'
+import { FavoritesProvider } from '../context/FavoritesProvider'
 import { ThemeProvider } from '../context/ThemeProvider'
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <BrowserRouter>{children}</BrowserRouter>
+        <FavoritesProvider>
+          <BrowserRouter>{children}</BrowserRouter>
+        </FavoritesProvider>
       </ThemeProvider>
     </QueryClientProvider>
   )
