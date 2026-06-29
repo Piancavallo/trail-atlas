@@ -1,5 +1,5 @@
 import type { Park } from '../types/nps'
-import { parseParkStates } from './park'
+import { parseParkStates, orderParksByCodes } from './park'
 
 /** Best-effort single-park entrance fee estimate (vehicle/standard pass). */
 export function estimateParkEntranceFee(park: Park): number | null {
@@ -49,8 +49,5 @@ export function getTripStates(parks: Park[]): string[] {
 }
 
 export function orderParksByTrip(parks: Park[], tripOrder: string[]): Park[] {
-  const byCode = new Map(parks.map((park) => [park.parkCode, park]))
-  return tripOrder
-    .map((code) => byCode.get(code))
-    .filter((park): park is Park => park !== undefined)
+  return orderParksByCodes(parks, tripOrder)
 }

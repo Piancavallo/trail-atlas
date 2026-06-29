@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Pagination } from '../components/Pagination/Pagination'
 import { ParkCard } from '../components/ParkCard/ParkCard'
 import { ParkCardSkeleton } from '../components/ParkCard/ParkCardSkeleton'
@@ -18,9 +19,17 @@ function buildApiQuery(search: string, designation: string): string | undefined 
 }
 
 export function ParksPage() {
+  const [searchParams] = useSearchParams()
+  const queryFromUrl = searchParams.get('q') ?? ''
+
   const [view, setView] = useState<ParksViewMode>('grid')
-  const [search, setSearch] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState('')
+  const [searchState, setSearchState] = useState({ urlQuery: queryFromUrl, search: queryFromUrl })
+  const search =
+    searchState.urlQuery === queryFromUrl ? searchState.search : queryFromUrl
+  const setSearch = (value: string) => {
+    setSearchState({ urlQuery: queryFromUrl, search: value })
+  }
+  const [debouncedSearch, setDebouncedSearch] = useState(queryFromUrl)
   const [stateCode, setStateCode] = useState('')
   const [designation, setDesignation] = useState('')
 

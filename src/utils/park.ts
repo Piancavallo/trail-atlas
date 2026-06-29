@@ -18,3 +18,10 @@ export function parseParkStates(states: string): string[] {
 export function formatParkStates(states: string): string {
   return parseParkStates(states).join(', ')
 }
+
+export function orderParksByCodes(parks: Park[], order: string[]): Park[] {
+  const byCode = new Map(parks.map((park) => [park.parkCode, park]))
+  return order
+    .map((code) => byCode.get(code))
+    .filter((park): park is Park => park !== undefined)
+}

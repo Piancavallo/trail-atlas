@@ -85,3 +85,6 @@ export const PARK_DESIGNATIONS = [
 ] as const
 
 export const PARKS_PAGE_SIZE = 24
+
+/** Iconic parks featured on the home page. */
+export const FEATURED_PARK_CODES = ['yell', 'grte', 'yose', 'arch', 'acad'] as const
